@@ -12,25 +12,45 @@
 </head>
 
 <body>
-    <div class="wrapper" style="background-image: url({% static 'images/bg-registration-form-.jpg' %});">
+    <div class="wrapper" style="background-image: url({% static 'images/bg-registration-form.jpg' %});">
         <div class="inner">
             <div class="image-holder">
                 <img src="{% static 'images/logo.jpg'%}" alt="">
             </div>
-            <form class="login" method="post">
-                {% csrf_token %}
-                <h3>Registro</h3>
+			<form class="login" method="post" action="{% url 'register' %}">                
+				{% csrf_token %}
+                <h3>Registro</h3>				
                 <div class="form-group">
                     <input type="text" name="first_name" placeholder="Nombre" class="form-control" autofocus>
+					{% if form.first_name.errors %}
+					{% for error in form.first_name.errors %}
+						<div class="alert alert-danger">{{ error }}</div>
+					{% endfor %}
+					{% endif %}					
                     <input type="text" name="last_name" placeholder="Apellido" class="form-control">
+					{% if form.last_name.errors %}
+					{% for error in form.last_name.errors %}
+						<div class="alert alert-danger">{{ error }}</div>
+					{% endfor %}
+					{% endif %}						
                 </div>
                 <div class="form-wrapper">
                     <input type="text" name="username" placeholder="Usuario" class="form-control">
-                    <i class="zmdi zmdi-account"></i>
+                    <i class="zmdi zmdi-account"></i>				
+					{% if form.user.errors %}
+					{% for error in form.user.errors %}
+						<div class="alert alert-danger">{{ error }}</div>
+					{% endfor %}
+					{% endif %}						
                 </div>
                 <div class="form-wrapper">
                     <input type="text" name="email" placeholder="Correo electrónico" class="form-control">
                     <i class="zmdi zmdi-email"></i>
+					{% if form.email.errors %}
+					{% for error in form.email.errors %}
+						<div class="alert alert-danger">{{ error }}</div>
+					{% endfor %}
+					{% endif %}					
                 </div>
                 <div class="form-wrapper">
                     <select name="gener" id="" class="form-control">
@@ -39,19 +59,39 @@
                         <option value="femal">Femenino</option>
                         <option value="other">Prefiero no decir</option>
                     </select>
+					{% if form.gener.errors %}
+					{% for error in form.gener.errors %}
+						<div class="alert alert-danger">{{ error }}</div>
+					{% endfor %}
+					{% endif %}							
                     <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
                 </div>
                 <div class="form-wrapper">
                     <input type="text" id="locationInput" name="city" class="form-control" placeholder="Ubicación" onclick="getLocation()">
                     <span id="locationIcon"><i class="zmdi zmdi-pin-drop"></i></span>
+					{% if form.location.errors %}
+					{% for error in form.location.errors %}
+						<div class="alert alert-danger">{{ error }}</div>
+					{% endfor %}
+					{% endif %}						
                 </div>
                 <div class="form-wrapper">
                     <input type="password" name="password1" placeholder="Contraseña" class="form-control">
                     <i class="zmdi zmdi-lock"></i>
+					{% if form.password1.errors %}
+					{% for error in form.password1.errors %}
+						<div class="alert alert-danger">{{ error }}</div>
+					{% endfor %}
+					{% endif %}					
                 </div>
                 <div class="form-wrapper">
                     <input type="password" name="password2" placeholder="Confirmar contraseña" class="form-control">
                     <i class="zmdi zmdi-lock"></i>
+					{% if form.password2.errors %}
+					{% for error in form.password2.errors %}
+						<div class="alert alert-danger">{{ error }}</div>
+					{% endfor %}
+					{% endif %}					
                 </div>
                 <button type="submit">Registrar
                     <i class="zmdi zmdi-arrow-right"></i>

@@ -17,7 +17,7 @@ function showPosition(position, input) {
     var lat = position.coords.latitude;
     var lon = position.coords.longitude;
 
-    // Luego, haz una solicitud a la API de geocodificación de MapQuest
+    // API de geocodificación de MapQuest
     var request = new XMLHttpRequest();
     request.open('GET', 'http://www.mapquestapi.com/geocoding/v1/reverse?key=WGo3hrhE6fUsEkDLxCLW3pVUyzfwj8iz&location=' + lat + ',' + lon, true);
 

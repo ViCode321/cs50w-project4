@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import RegistrationForm
+from app.forms import RegistrationForm
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -26,20 +26,23 @@ def login(request):
     else:
         return render(request, 'login.html')
 
-def register(request):
+def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
+        print('Form is valid: ', form.is_valid())
+        print('Form errors: ', form.errors)        
         if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password1'])
-            user.save()
+            user = form.save()
+            login(request, user)            
             # Envía el correo electrónico de bienvenida
             send_welcome_email(user.email)
             # Redirige a la página de inicio de sesión u otra página después del registro.
-            return redirect('login')
+            return redirect('home')
+        else:
+            messages.error(request, 'Hubo un error en el registro. Corrige los errores a continuación.')
+            return render(request, 'register.html', {'form': form})            
     else:
         form = RegistrationForm()
-
     return render(request, 'register.html', {'form': form})
 
 def send_welcome_email(email):

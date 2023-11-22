@@ -1,15 +1,12 @@
-# Forms.py
-
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from .models import Users
 
-class RegistrationForm(forms.ModelForm):
+class RegistrationForm(UserCreationForm):
     class Meta:
         model = Users
-        fields = ['Name', 'Email', 'Gener', 'Password']  # Agrega otros campos si es necesario
-
-    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput)
+        exclude = ['RegistrationDate']  # Excluye el campo no editable        
+        fields = UserCreationForm.Meta.fields + ('Name', 'Last_name', 'Username', 'Email', 'Gener', 'Ubication', 'Biography', 'PerfilPhoto')
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
