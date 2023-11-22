@@ -1,10 +1,9 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.contrib.auth.models import User
-from .models import Users
-from django.contrib.auth.decorators import login_required
-
+from .forms import RegistrationForm
+from django.core.mail import send_mail
+from django.conf import settings
 
 def start(request):
     return render(request, 'login.html')
@@ -29,20 +28,23 @@ def login(request):
 
 def register(request):
     if request.method == 'POST':
-        # Obtener datos del formulario
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-
-        # Crear nuevo usuario
-        user = User.objects.create_user(username=username, email=email, password=password)
-
-        # Crear instancia de Usuario personalizado
-        usuario_personalizado = Users(user=user, Nombre=username, CorreoElectronico=email, Contraseña=password)
-        usuario_personalizado.save()
-
-        # Autenticar al nuevo usuario
-        login(request, user)
-        return redirect('start')  # Reemplaza 'dashboard' con el nombre de tu vista de panel principal
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password1'])
+            user.save()
+            # Envía el correo electrónico de bienvenida
+            send_welcome_email(user.email)
+            # Redirige a la página de inicio de sesión u otra página después del registro.
+            return redirect('login')
     else:
-        return render(request, 'register.html')
+        form = RegistrationForm()
+
+    return render(request, 'registration.html', {'form': form})
+
+def send_welcome_email(email):
+    subject = '¡Bienvenido a Christians Together!'
+    message = 'Gracias por registrarte en Christians Together. Esperamos que disfrutes de nuestra plataforma.'
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+    send_mail(subject, message, from_email, recipient_list)

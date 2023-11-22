@@ -18,43 +18,44 @@
 				<div class="image-holder">
 					<img src="{% static 'images/logo.jpg'%}" alt="">
 				</div>
-				<form action="">
+				<form class="login" method="post">
+					{% csrf_token %}
 					<h3>Registro</h3>
 					<div class="form-group">
-						<input type="text" placeholder="First Name" class="form-control">
-						<input type="text" placeholder="Last Name" class="form-control">
+						<input type="text" name="first_name" placeholder="Nombre" class="form-control" autofocus>
+						<input type="text" name="last_name" placeholder="Apellido" class="form-control">
 					</div>
 					<div class="form-wrapper">
-						<input type="text" placeholder="Username" class="form-control">
+						<input type="text" name="username" placeholder="Usuario" class="form-control">
 						<i class="zmdi zmdi-account"></i>
 					</div>
 					<div class="form-wrapper">
-						<input type="text" placeholder="Email Address" class="form-control">
+						<input type="text" name="email" placeholder="Corro electrónico" class="form-control">
 						<i class="zmdi zmdi-email"></i>
 					</div>
 					<div class="form-wrapper">
-						<select name="" id="" class="form-control">
-							<option value="" disabled selected>Gender</option>
-							<option value="male">Male</option>
-							<option value="femal">Female</option>
-							<option value="other">Other</option>
+						<select name="gener" id="" class="form-control">
+							<option value="" disabled selected>Sexo</option>
+							<option value="male">Masculino</option>
+							<option value="femal">Femenino</option>
+							<option value="other">Prefiero no decir</option>
 						</select>
 						<i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
 					</div>
 					<div class="form-wrapper">
-						<input type="password" placeholder="Password" class="form-control">
+						<input type="password" name="password1" placeholder="Contraseña" class="form-control">
 						<i class="zmdi zmdi-lock"></i>
 					</div>
 					<div class="form-wrapper">
-						<input type="password" placeholder="Confirm Password" class="form-control">
+						<input type="password" name="password2" placeholder="Confirmar contraseña" class="form-control">
 						<i class="zmdi zmdi-lock"></i>
 					</div>
-					<button>Registrar
+					{{ form.as_p }}
+					<button type="submit">Registrar
 						<i class="zmdi zmdi-arrow-right"></i>
-					</button>
+					</button>					
 				</form>
 			</div>
-		</div>
-		
-	</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+		</div>		
+	</body>
 </html>
