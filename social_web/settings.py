@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-gy(^r-0r!e6*-r53av70zijep#3nch!1g2bvic#8o01)$)3%vc
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+AUTH_USER_MODEL = 'app.Users'  # Reemplaza 'app' con el nombre real de tu aplicación
 ALLOWED_HOSTS = []
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
