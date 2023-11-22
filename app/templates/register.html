@@ -1,60 +1,64 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta charset="utf-8">
-	<title>Registro</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	<!-- MATERIAL DESIGN ICONIC FONT -->
-	<link rel="stylesheet" href="{% static 'fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}">
-	<link rel="stylesheet" href="{% static 'css/layout.css' %}">
-	<!-- STYLE CSS -->
-	<link rel="stylesheet" href="{% static 'css/styles_login.css' %}">
+    <meta charset="utf-8">
+    <title>Registro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles_login.css' %}">
 </head>
-	<body>
-        <div class="wrapper" style="background-image: url({% static 'images/bg-registration-form-.jpg' %});">
-			<div class="inner">
-				<div class="image-holder">
-					<img src="{% static 'images/logo.jpg'%}" alt="">
-				</div>
-				<form class="login" method="post">
-					{% csrf_token %}
-					<h3>Registro</h3>
-					<div class="form-group">
-						<input type="text" name="first_name" placeholder="Nombre" class="form-control" autofocus>
-						<input type="text" name="last_name" placeholder="Apellido" class="form-control">
-					</div>
-					<div class="form-wrapper">
-						<input type="text" name="username" placeholder="Usuario" class="form-control">
-						<i class="zmdi zmdi-account"></i>
-					</div>
-					<div class="form-wrapper">
-						<input type="text" name="email" placeholder="Corro electrónico" class="form-control">
-						<i class="zmdi zmdi-email"></i>
-					</div>
-					<div class="form-wrapper">
-						<select name="gener" id="" class="form-control">
-							<option value="" disabled selected>Sexo</option>
-							<option value="male">Masculino</option>
-							<option value="femal">Femenino</option>
-							<option value="other">Prefiero no decir</option>
-						</select>
-						<i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
-					</div>
-					<div class="form-wrapper">
-						<input type="password" name="password1" placeholder="Contraseña" class="form-control">
-						<i class="zmdi zmdi-lock"></i>
-					</div>
-					<div class="form-wrapper">
-						<input type="password" name="password2" placeholder="Confirmar contraseña" class="form-control">
-						<i class="zmdi zmdi-lock"></i>
-					</div>
-					<button type="submit">Registrar
-						<i class="zmdi zmdi-arrow-right"></i>
-					</button>					
-				</form>
-			</div>
-		</div>		
-	</body>
+
+<body>
+    <div class="wrapper" style="background-image: url({% static 'images/bg-registration-form-.jpg' %});">
+        <div class="inner">
+            <div class="image-holder">
+                <img src="{% static 'images/logo.jpg'%}" alt="">
+            </div>
+            <form class="login" method="post">
+                {% csrf_token %}
+                <h3>Registro</h3>
+                <div class="form-group">
+                    <input type="text" name="first_name" placeholder="Nombre" class="form-control" autofocus>
+                    <input type="text" name="last_name" placeholder="Apellido" class="form-control">
+                </div>
+                <div class="form-wrapper">
+                    <input type="text" name="username" placeholder="Usuario" class="form-control">
+                    <i class="zmdi zmdi-account"></i>
+                </div>
+                <div class="form-wrapper">
+                    <input type="text" name="email" placeholder="Correo electrónico" class="form-control">
+                    <i class="zmdi zmdi-email"></i>
+                </div>
+                <div class="form-wrapper">
+                    <select name="gener" id="" class="form-control">
+                        <option value="" disabled selected>Sexo</option>
+                        <option value="male">Masculino</option>
+                        <option value="femal">Femenino</option>
+                        <option value="other">Prefiero no decir</option>
+                    </select>
+                    <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
+                </div>
+                <div class="form-wrapper">
+                    <input type="text" id="locationInput" name="city" class="form-control" placeholder="Ubicación" onclick="getLocation()">
+                    <span id="locationIcon"><i class="zmdi zmdi-pin-drop"></i></span>
+                </div>
+                <div class="form-wrapper">
+                    <input type="password" name="password1" placeholder="Contraseña" class="form-control">
+                    <i class="zmdi zmdi-lock"></i>
+                </div>
+                <div class="form-wrapper">
+                    <input type="password" name="password2" placeholder="Confirmar contraseña" class="form-control">
+                    <i class="zmdi zmdi-lock"></i>
+                </div>
+                <button type="submit">Registrar
+                    <i class="zmdi zmdi-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+	<script src="{% static 'js/location.js' %}"></script>
+</body>
 </html>

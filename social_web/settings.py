@@ -136,7 +136,6 @@ LANGUAGES = [
     ('es', _('Spanish')),  # Añade 'es' a la lista de idiomas permitidos
 ]
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
