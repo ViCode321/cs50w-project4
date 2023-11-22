@@ -6,9 +6,8 @@ class Users(AbstractUser):
     UserID = models.AutoField(primary_key=True)
     Name = models.CharField(max_length=50)
     Last_name = models.CharField(max_length=50, default='')  
-    Username = models.CharField(max_length=255, unique=True, default="default_username")        
+    Username = models.CharField(max_length=255, unique=True, default="default_username")       
     Email = models.EmailField(unique=True)
-    password = models.CharField(max_length=50, default='default_password')    
     Gener = models.CharField(max_length=255)
     PerfilPhoto = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     Ubication = models.CharField(max_length=100, null=True, blank=True)
@@ -24,6 +23,7 @@ class Users(AbstractUser):
         related_name='custom_user_permissions',
         blank=True,
     )
+
 
 class Group(models.Model):
     GroupID = models.AutoField(primary_key=True)
