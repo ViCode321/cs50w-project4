@@ -1,10 +1,10 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Users
+from django.contrib.auth import get_user_model
 
 class RegistrationForm(UserCreationForm):
     class Meta:
-        model = Users
+        model = get_user_model()  # Cambiado aquí
         exclude = ['RegistrationDate', 'Biography', 'PerfilPhoto']  # Excluye el campo no editable        
         fields = UserCreationForm.Meta.fields + ('Name', 'Last_name', 'Username', 'Email', 'Gener', 'Ubication')
 
