@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from app.forms import RegistrationForm
+from app.forms import RegistrationForm, UserProfileForm
 from django.core.mail import send_mail
 from django.conf import settings
 from app.models import CustomUser
@@ -73,7 +73,26 @@ def foto_view(request):
     } 
     return render(request, 'foto.html', context)
 
+@login_required
+def user_profile(request):
+    user = request.user
 
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Perfil actualizado correctamente.')
+            return redirect('foto')
+        else:
+            messages.error(request, 'Error al actualizar el perfil. Por favor, corrija los errores.')
+    else:
+        form = UserProfileForm(instance=user)
+
+    context = {
+        'form': form,
+        'user': user,
+    }
+    return render(request, 'foto.html', context)
 
 
 

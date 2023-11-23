@@ -2,6 +2,8 @@
 from django.urls import path
 from .views import home, logout_view, login_view, foto_view
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', login_view, name='start'),  # Redirige al login en la ruta raíz
@@ -12,4 +14,10 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('foto/', foto_view, name='foto'),
     path('home/', home, name='home'),
+    path('user-profile/', views.user_profile, name='user_profile'),    
 ]
+
+# Configuración para servir archivos estáticos y de medios en modo de desarrollo
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

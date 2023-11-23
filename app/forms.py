@@ -25,3 +25,8 @@ class RegistrationForm(UserCreationForm):
                 code='password_mismatch',
             )
         return password2
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['biography', 'profile_picture']

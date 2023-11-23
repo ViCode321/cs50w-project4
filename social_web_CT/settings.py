@@ -139,6 +139,15 @@ LOCALE_PATHS = [
 ]
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images/')
+
+# Configuración adicional para imágenes de perfil
+PROFILE_PICS_DIR = 'profile_pics/'  # Ruta relativa a MEDIA_ROOT
+PROFILE_PICS_ROOT = os.path.join(MEDIA_ROOT, PROFILE_PICS_DIR)
+PROFILE_PICS_URL = os.path.join(MEDIA_URL, PROFILE_PICS_DIR)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

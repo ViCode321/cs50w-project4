@@ -8,7 +8,7 @@ class CustomUser(AbstractUser):
         ('other', 'Prefer not to say'),
     ]
 
-    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)    
     location = models.CharField(max_length=100, blank=False, null=False)
     biography = models.TextField(blank=True, null=True)
     registration_date = models.DateTimeField(auto_now_add=True)
