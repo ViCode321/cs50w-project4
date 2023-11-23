@@ -4,6 +4,7 @@ from django.contrib import messages
 from app.forms import RegistrationForm
 from django.core.mail import send_mail
 from django.conf import settings
+from app.models import CustomUser
 
 def start(request):
     return render(request, 'login.html')
@@ -12,6 +13,8 @@ def start(request):
 def home(request):
     return render(request, 'home.html')
 
+from django.contrib.auth import get_user_model
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -19,12 +22,17 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('start')  # Reemplaza 'dashboard' con el nombre de tu vista de panel principal
+            return redirect('home')
         else:
-            # Manejar el caso en el que la autenticación falla
-            return render(request, 'login.html', {'error': 'Nombre de usuario o contraseña incorrectos.'})
-    else:
-        return render(request, 'login.html')
+            User = get_user_model()
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                messages.error(request, 'El usuario {username} no existe')
+            messages.error(request, 'Nombre de usuario o contraseña incorrectos')
+            return render(request, 'login.html')
+    return render(request, 'login.html')
+
 
 def register_view(request):
     if request.method == 'POST':
@@ -43,7 +51,6 @@ def register_view(request):
             return render(request, 'register.html', {'form': form})         
     else:
         form = RegistrationForm()
-
     return render(request, 'register.html', {'form': form})
 
 def send_welcome_email(email):
@@ -52,3 +59,8 @@ def send_welcome_email(email):
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message, from_email, recipient_list)
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+

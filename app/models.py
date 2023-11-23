@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 class CustomUser(AbstractUser):
     gender_choices = [
         ('male', 'Male'),
@@ -14,6 +13,9 @@ class CustomUser(AbstractUser):
     biography = models.TextField(blank=True, null=True)
     registration_date = models.DateTimeField(auto_now_add=True)
     gender = models.CharField(max_length=10, choices=gender_choices)
+
+    def check_password(self, raw_password):
+        return super().check_password(raw_password)
 
 class Group(models.Model):
     name = models.CharField(max_length=100)

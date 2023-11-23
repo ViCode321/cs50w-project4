@@ -26,8 +26,7 @@
                         {% for error in form.first_name.errors %}
                             <div class="alert alert-danger">{{ error }}</div>
                         {% endfor %}
-                    {% endif %}
-                
+                    {% endif %}                
                     <input type="text" name="last_name" placeholder="Apellido" class="form-control">
                     {% if form.last_name.errors %}
                         {% for error in form.last_name.errors %}
@@ -96,7 +95,8 @@
                 </div>
                 <button type="submit">Registrar
                     <i class="zmdi zmdi-arrow-right"></i>
-                </button>
+                </button>              
+                <span class="redirect-link">¿Ya tienes una cuenta?<a href="{% url 'login' %}">Accede aquí</a></span>                    
             </form>
         </div>
     </div>

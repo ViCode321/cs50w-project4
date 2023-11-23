@@ -1,11 +1,14 @@
-# urls.py
+# urls.py de app
 from django.urls import path
-from .views import home
+from .views import home, logout_view, login_view
 from . import views
 
 urlpatterns = [
-    path('', views.start, name='start'),  # Asociar la URL raíz a la vista de inicio
-    #path('login/', login, name='login'),
+    path('', login_view, name='start'),  # Redirige al login en la ruta raíz
+#    path('', views.start, name='start'),  # Asociar la URL raíz a la vista de inicio
+    path('login/', login_view, name='login'),    
+#    path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),    
+    path('logout/', logout_view, name='logout'),
     path('home/', home, name='home'),
 ]

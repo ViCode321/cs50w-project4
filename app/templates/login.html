@@ -2,39 +2,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>Acceder</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	<!-- MATERIAL DESIGN ICONIC FONT -->
-	<link rel="stylesheet" href="{% static 'fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}">
-	<link rel="stylesheet" href="{% static 'css/layout.css' %}">
-	<!-- STYLE CSS -->
-	<link rel="stylesheet" href="{% static 'css/styles_login.css' %}">
+    <meta charset="utf-8">
+    <title>Acceder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- MATERIAL DESIGN ICONIC FONT -->
+    <link rel="stylesheet" href="{% static 'fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <!-- STYLE CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles_login.css' %}">
+
 </head>
-	<body>
-        <div class="wrapper" style="background-image: url({% static 'images/bg-registration-form.jpg' %});">
-			<div class="inner">
-				<div class="image-holder">
-					<img src="{% static 'images/logo.jpg'%}" alt="">
-				</div>
-				<form action="">
-					<h3>Acceder</h3>	
-					<div class="form-wrapper">
-						<input type="text" placeholder="Nombre de Usuario" class="form-control">
-						<i class="zmdi zmdi-account"></i>
-					</div>
-					<div class="form-wrapper">
-						<input type="password" placeholder="Contraseña" class="form-control">
-						<i class="zmdi zmdi-lock"></i>
-					</div>
-					<button>Acceder
-						<i class="zmdi zmdi-arrow-right"></i>
-					</button>
-					<span class="redirect-link">¿No tienes una cuenta? <a href="{% url 'register' %}">Regístrate aquí</a></span>					
-				</form>
-			</div>
-		</div>
-		
-	</body>
+<body>
+    <div class="wrapper" style="background-image: url({% static 'images/bg-registration-form-1.jpg' %});">
+        <div class="inner">
+            <div class="image-holder">
+                <img src="{% static 'images/logo.jpg'%}" alt="">
+            </div>
+			<form class="login" method="post">
+				{% csrf_token %}
+                <h3>Acceder</h3> 
+                <div class="form-wrapper">
+                    <input type="text" name="username" placeholder="Nombre de Usuario" class="form-control">
+                    <i class="zmdi zmdi-account"></i>                        
+                </div>
+                <div class="form-wrapper">
+                    <input type="password" name="password" placeholder="Contraseña" class="form-control">
+                    <i class="zmdi zmdi-lock"></i>
+                </div>						
+				{% if messages %}
+				<div class="error-messages">
+				  {% for message in messages %}
+					<div class="message">{{ message }}</div>
+				  {% endfor %}              
+				</div>            
+				{% endif %}   				
+                <button type="submit">Acceder
+                    <i class="zmdi zmdi-arrow-right"></i>
+                </button>
+                <span class="redirect-link">¿No tienes una cuenta? <a href="{% url 'register' %}">Regístrate aquí</a></span>                    
+            </form>
+        </div>
+    </div>
+</body>
 </html>
