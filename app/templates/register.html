@@ -55,7 +55,7 @@
         <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
     </div>
     <div class="form-wrapper">
-        <input type="text" id="locationInput" name="location" class="form-control" placeholder="Ubicación" onclick="getLocation()">
+        <input type="text"  name="location" id="locationInput" class="form-control" placeholder="Ubicación" onclick="getLocation()">
         <span id="locationIcon"><i class="zmdi zmdi-pin-drop"></i></span>
         {% if form.location.errors %}
         {% for error in form.location.errors %}

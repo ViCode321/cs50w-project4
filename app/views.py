@@ -33,7 +33,7 @@ def login_view(request):
 
 def register_view(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)       
+        form = RegistrationForm(request.POST)           
         if form.is_valid():
             user = form.save()
             login(request, user)            
@@ -62,15 +62,19 @@ def logout_view(request):
 @login_required
 def foto_view(request):
     user = request.user
+    location = user.location or 'Ubicación no disponible'
+
     context = {
         'first_name': user.first_name,
-        'last_name': user.last_name,        
+        'last_name': user.last_name,
         'username': user.username,
         'password': '********',  # Puedes obtener esto de la manera que desees
-        'location': user.location,
+        'location': location,
         'email': user.email,
     } 
     return render(request, 'foto.html', context)
+
+
 
 
 

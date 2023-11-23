@@ -9,13 +9,16 @@ class CustomUser(AbstractUser):
     ]
 
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
-    location = models.CharField(max_length=100, blank=True)
+    location = models.CharField(max_length=100, blank=False, null=False)
     biography = models.TextField(blank=True, null=True)
     registration_date = models.DateTimeField(auto_now_add=True)
     gender = models.CharField(max_length=10, choices=gender_choices)
 
     def check_password(self, raw_password):
         return super().check_password(raw_password)
+    
+    def __str__(self):
+        return f'{self.username} ({self.location or "N/A"})'    
 
 class Group(models.Model):
     name = models.CharField(max_length=100)
