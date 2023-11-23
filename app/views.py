@@ -42,7 +42,6 @@ def register_view(request):
             # Redirige a la página de inicio de sesión u otra página después del registro.
             return redirect('foto')
         else:
-            messages.error(request, 'Hubo un error en el registro. Corrige los errores a continuación.')
             return render(request, 'register.html', {'form': form})         
     else:
         form = RegistrationForm()
@@ -62,16 +61,17 @@ def logout_view(request):
 @login_required
 def foto_view(request):
     user = request.user
-    location = user.location or 'Ubicación no disponible'
+    location = request.POST.get('location_hidden')  # Obtener el valor del campo oculto
 
     context = {
         'first_name': user.first_name,
         'last_name': user.last_name,
         'username': user.username,
         'password': '********',  # Puedes obtener esto de la manera que desees
-        'location': location,
+        'location': location,  # Usar el valor del campo oculto
         'email': user.email,
-    } 
+    }
+
     return render(request, 'foto.html', context)
 
 

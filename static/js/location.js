@@ -28,10 +28,17 @@ function showPosition(position, input) {
             var location = data.results[0].locations[0];
             var city = location.adminArea5;
 
-            // Mostrar la ciudad en el elemento input
-            input.value = city;
+            // Crear un campo oculto adicional y asignarle el valor
+            var hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "location_hidden";
+            hiddenInput.value = city;
 
-            // Deshabilitar el input después de seleccionar la ubicación
+            // Insertar el campo oculto en el formulario
+            var form = input.form;
+            form.appendChild(hiddenInput);
+
+            // Deshabilitar el campo de entrada después de seleccionar la ubicación
             input.disabled = true;
         } else {
             // Hubo un error con la solicitud
