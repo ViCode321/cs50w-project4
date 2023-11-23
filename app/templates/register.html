@@ -22,6 +22,7 @@
                 <h3>Registro</h3>				
                 <div class="form-group">
                     <input type="text" name="first_name" placeholder="Nombre" class="form-control" autofocus>
+<<<<<<< HEAD
 					{% if form.Name.errors %}
 					{% for error in form.Name.errors %}
 						<div class="alert alert-danger">{{ error }}</div>
@@ -33,12 +34,31 @@
 						<div class="alert alert-danger">{{ error }}</div>
 					{% endfor %}
 					{% endif %}						
+=======
+                    {% if form.first_name.errors %}
+                        {% for error in form.first_name.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                
+                    <input type="text" name="last_name" placeholder="Apellido" class="form-control">
+                    {% if form.last_name.errors %}
+                        {% for error in form.last_name.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}				
+>>>>>>> master
                 </div>
                 <div class="form-wrapper">
                     <input type="text" name="username" placeholder="Usuario" class="form-control">
                     <i class="zmdi zmdi-account"></i>				
+<<<<<<< HEAD
 					{% if form.Username.errors %}
 					{% for error in form.Username.errors %}
+=======
+					{% if form.username.errors %}
+					{% for error in form.username.errors %}
+>>>>>>> master
 						<div class="alert alert-danger">{{ error }}</div>
 					{% endfor %}
 					{% endif %}						
@@ -46,8 +66,13 @@
                 <div class="form-wrapper">
                     <input type="text" name="email" placeholder="Correo electrónico" class="form-control">
                     <i class="zmdi zmdi-email"></i>
+<<<<<<< HEAD
 					{% if form.Email.errors %}
 					{% for error in form.Email.errors %}
+=======
+					{% if form.email.errors %}
+					{% for error in form.email.errors %}
+>>>>>>> master
 						<div class="alert alert-danger">{{ error }}</div>
 					{% endfor %}
 					{% endif %}					
@@ -59,8 +84,13 @@
                         <option value="femal">Femenino</option>
                         <option value="other">Prefiero no decir</option>
                     </select>
+<<<<<<< HEAD
 					{% if form.Gener.errors %}
 					{% for error in form.Gener.errors %}
+=======
+					{% if form.gender.errors %}
+					{% for error in form.gender.errors %}
+>>>>>>> master
 						<div class="alert alert-danger">{{ error }}</div>
 					{% endfor %}
 					{% endif %}							
@@ -69,8 +99,13 @@
                 <div class="form-wrapper">
                     <input type="text" id="locationInput" name="city" class="form-control" placeholder="Ubicación" onclick="getLocation()">
                     <span id="locationIcon"><i class="zmdi zmdi-pin-drop"></i></span>
+<<<<<<< HEAD
 					{% if form.Ubication.errors %}
 					{% for error in form.Ubication.errors %}
+=======
+					{% if form.location.errors %}
+					{% for error in form.location.errors %}
+>>>>>>> master
 						<div class="alert alert-danger">{{ error }}</div>
 					{% endfor %}
 					{% endif %}						
