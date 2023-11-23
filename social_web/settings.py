@@ -41,7 +41,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 # Application definition
 
 INSTALLED_APPS = [
-    'app',
+    'app.apps.OrdersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -104,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'OPTIONS': {
             'min_length': 4,
         }
-    },        
+    },
 ]
 
 #{'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},{
