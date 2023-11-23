@@ -29,11 +29,6 @@ def login(request):
 def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-<<<<<<< HEAD
-        print('Form is valid: ', form.is_valid())
-        print('Form errors: ', form.errors)        
-=======
->>>>>>> master
         if form.is_valid():
             user = form.save()
             login(request, user)            
@@ -43,16 +38,10 @@ def register_view(request):
             return redirect('home')
         else:
             messages.error(request, 'Hubo un error en el registro. Corrige los errores a continuación.')
-<<<<<<< HEAD
-            return render(request, 'register.html', {'form': form})            
-    else:
-        form = RegistrationForm()
-=======
             return render(request, 'register.html', {'form': form})         
     else:
         form = RegistrationForm()
 
->>>>>>> master
     return render(request, 'register.html', {'form': form})
 
 def send_welcome_email(email):
