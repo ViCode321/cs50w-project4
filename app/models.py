@@ -6,7 +6,7 @@ class Users(AbstractUser):
     UserID = models.AutoField(primary_key=True)
     Name = models.CharField(max_length=50)
     Last_name = models.CharField(max_length=50)  
-    Username = models.CharField(max_length=255, unique=True, default="default_username")       
+    Username = models.CharField(max_length=255, unique=True)       
     Email = models.EmailField(unique=True)
     Gener = models.CharField(max_length=255)
     PerfilPhoto = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
