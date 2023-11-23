@@ -24,11 +24,6 @@ def login_view(request):
             login(request, user)
             return redirect('home')
         else:
-            User = get_user_model()
-            try:
-                user = User.objects.get(username=username)
-            except User.DoesNotExist:
-                messages.error(request, 'El usuario {username} no existe')
             messages.error(request, 'Nombre de usuario o contraseña incorrectos')
             return render(request, 'login.html')
     return render(request, 'login.html')
