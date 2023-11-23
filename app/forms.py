@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 class RegistrationForm(UserCreationForm):
     class Meta:
         model = get_user_model()  # Cambiado aquí
-        exclude = ['RegistrationDate', 'Biography', 'PerfilPhoto']  # Excluye el campo no editable        
+        #exclude = ['RegistrationDate', 'Biography', 'PerfilPhoto']  # Excluye el campo no editable        
         fields = UserCreationForm.Meta.fields + ('Name', 'Last_name', 'Username', 'Email', 'Gener', 'Ubication')
 
     def clean_password2(self):

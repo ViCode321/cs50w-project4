@@ -29,8 +29,8 @@ def login(request):
 def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-        #print('Form is valid: ', form.is_valid())
-        #print('Form errors: ', form.errors)        
+        print('Form is valid: ', form.is_valid())
+        print('Form errors: ', form.errors)        
         if form.is_valid():
             user = form.save()
             login(request, user)            
