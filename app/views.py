@@ -5,6 +5,8 @@ from app.forms import RegistrationForm
 from django.core.mail import send_mail
 from django.conf import settings
 from app.models import CustomUser
+from django.contrib.auth.decorators import login_required
+
 
 def start(request):
     return render(request, 'login.html')
@@ -57,7 +59,20 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-def foto(request):
-    return render(request, 'foto.html')
+@login_required
+def foto_view(request):
+    user = request.user
+    context = {
+        'first_name': user.first_name,
+        'last_name': user.last_name,        
+        'username': user.username,
+        'password': '********',  # Puedes obtener esto de la manera que desees
+        'location': user.location,
+        'email': user.email,
+    } 
+    return render(request, 'foto.html', context)
+
+
+
 
 
