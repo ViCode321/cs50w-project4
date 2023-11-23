@@ -12,7 +12,7 @@ def start(request):
 def home(request):
     return render(request, 'home.html')
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -29,6 +29,8 @@ def login(request):
 def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
+        print('Form is valid: ', form.is_valid())
+        print('Form errors: ', form.errors)        
         if form.is_valid():
             user = form.save()
             login(request, user)            
