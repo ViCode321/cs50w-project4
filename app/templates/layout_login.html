@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>        
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- MATERIAL DESIGN ICONIC FONT -->
+    <link rel="stylesheet" href="{% static 'fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <!-- STYLE CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles_login.css' %}">	
+</style>
+</head>
+<body>
+    <div class="wrapper" style="background-image: url({% static 'images/bg-registration-form-1.jpg' %});">
+        <div class="inner">
+            <div class="image-holder">
+                <img src="{% static 'images/logo.jpg'%}" alt="">
+            </div>
+            {% block form %}
+            {% endblock %}
+        </div>
+    </div>
+	<script src="{% static 'js/location.js' %}"></script>
+</body>
+</html>

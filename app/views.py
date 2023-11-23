@@ -31,16 +31,14 @@ def login_view(request):
 
 def register_view(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        print('Form is valid: ', form.is_valid())
-        print('Form errors: ', form.errors)        
+        form = RegistrationForm(request.POST)       
         if form.is_valid():
             user = form.save()
             login(request, user)            
             # Envía el correo electrónico de bienvenida
             send_welcome_email(user.email)
             # Redirige a la página de inicio de sesión u otra página después del registro.
-            return redirect('home')
+            return redirect('foto')
         else:
             messages.error(request, 'Hubo un error en el registro. Corrige los errores a continuación.')
             return render(request, 'register.html', {'form': form})         
@@ -58,4 +56,8 @@ def send_welcome_email(email):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def foto(request):
+    return render(request, 'foto.html')
+
 
