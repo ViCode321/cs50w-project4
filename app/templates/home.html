@@ -1,11 +1,84 @@
 {% extends "layout.html" %}
+{% load static %}
 
 {% block title %}
-    Inicio
+Inicio
 {% endblock %}
 
-{%  block main %}
+{% block main %}
+<div class="container emp-profile">
+    <h2>Publicaciones</h2>
+    <div class="container emp-profile">
+        <h2>Publicaciones</h2>
+        {% for post in posts %}
+            <div class="post">
+                <p>{{ post.content }}</p>
+                <p>{{ post.publication_date }}</p>
+                <!-- Agrega más detalles según tu modelo de datos -->
+            </div>
+        {% endfor %}
+    </div>
+    <!-- Botón para abrir la ventana modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#makePostModal">
+        Hacer Publicación
+    </button>
 
-<h1>Esta bien</h1>
-
+    <!-- Ventana modal para hacer publicaciones -->
+    <div class="modal fade" id="makePostModal" tabindex="-1" role="dialog" aria-labelledby="makePostModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="makePostModalLabel">Hacer Publicación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="wrapper">
+                          <section class="post">
+                            <header>Create Post</header>
+                            <form action="#">
+                              <div class="content">
+                                <img src="icons/logo.png" alt="logo">
+                                <div class="details">
+                                  <p>CodingNepal</p>
+                                  <div class="privacy">
+                                    <i class="fas fa-user-friends"></i>
+                                    <span>Friends</span>
+                                    <i class="fas fa-caret-down"></i>
+                                  </div>
+                                </div>
+                              </div>
+                              <textarea placeholder="What's on your mind, CodingNepal?" spellcheck="false" required></textarea>
+                              <div class="theme-emoji">
+                                <img src="icons/theme.svg" alt="theme">
+                                <img src="icons/smile.svg" alt="smile">
+                              </div>
+                              <div class="options">
+                                <p>Add to Your Post</p>
+                                <ul class="list">
+                                  <li><img src="icons/gallery.svg" alt="gallery"></li>
+                                  <li><img src="icons/tag.svg" alt="gallery"></li>
+                                  <li><img src="icons/emoji.svg" alt="gallery"></li>
+                                  <li><img src="icons/mic.svg" alt="gallery"></li>
+                                  <li><img src="icons/more.svg" alt="gallery"></li>
+                                </ul>
+                              </div>
+                              <button>Post</button>
+                            </form>
+                          </section>
+                        </div>
+                      </div>
+                  
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary">Hacer Publicación</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+

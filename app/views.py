@@ -5,6 +5,7 @@ from app.forms import RegistrationForm, UserProfileForm
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from .models import Post
 
 
 def start(request):
@@ -93,7 +94,9 @@ def user_profile(request):
     }
     return render(request, 'foto.html', context)
 
-
+def view_posts(request):
+    posts = Post.objects.all()
+    return render(request, 'view_posts.html', {'posts': posts})
 
 
 
