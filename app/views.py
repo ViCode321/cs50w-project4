@@ -81,10 +81,10 @@ def user_profile(request):
         form = UserProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Perfil actualizado correctamente.')
+            print('Perfil actualizado correctamente.')
             return redirect('foto')
         else:
-            messages.error(request, 'Error al actualizar el perfil. Por favor, corrija los errores.')
+            print('Error al actualizar el perfil. Por favor, corrija los errores.')
     else:
         form = UserProfileForm(instance=user)
 
