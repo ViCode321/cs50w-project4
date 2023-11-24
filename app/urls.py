@@ -1,6 +1,6 @@
 # urls.py de app
 from django.urls import path
-from .views import home, logout_view, login_view, foto_view
+from .views import logout_view, login_view, foto_view
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -13,8 +13,9 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),    
     path('logout/', logout_view, name='logout'),
     path('foto/', foto_view, name='foto'),
-    path('home/', home, name='home'),
-    path('user-profile/', views.user_profile, name='user_profile'),    
+    path('home/', views.home, name='home'),
+    path('user_profile/', views.user_profile, name='user_profile'),    
+    path('profile/', views.profile, name='profile'),
 ]
 
 # Configuración para servir archivos estáticos y de medios en modo de desarrollo

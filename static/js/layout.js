@@ -38,9 +38,6 @@ $(".navbar-toggler").click(function(){
 	$(".navbar-collapse").slideToggle(300);
 	setTimeout(function(){ test(); });
 });
-
-
-
 // --------------add active class-on another-page move----------
 jQuery(document).ready(function($){
 	// Get current path and find target link
@@ -48,13 +45,32 @@ jQuery(document).ready(function($){
 
 	// Account for home page with empty path
 	if ( path == '' ) {
-		path = 'index.html';
+		path = '';
 	}
 
 	var target = $('#navbarSupportedContent ul li a[href="'+path+'"]');
 	// Add active class to target link
 	target.parent().addClass('active');
 });
+
+$("#navbarSupportedContent").on("click", "a", function (e) {
+    e.preventDefault();
+    var url = $(this).attr('href');
+
+    $.ajax({
+        url: url,
+        type: 'get',
+        dataType: 'html',
+        success: function (data) {
+            // Busca el contenido principal en la respuesta AJAX
+            var mainContent = $(data).filter('.container').html();
+
+            // Actualiza solo el contenido principal en tu contenedor
+            $(".container").html(mainContent);
+        }
+    });
+});
+
 
 
 
