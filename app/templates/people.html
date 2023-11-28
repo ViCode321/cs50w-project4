@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+Personas
+{% endblock %}
+
+{% block main %}
+<div class="container emp-profile">
+    <h2>Personas</h2>
+
+    <!-- Contenedor para mostrar los usuarios en línea -->
+    <div id="online-users">
+        <h3>Usuarios en línea:</h3>
+        <p id="no-online-users-message" style="display: none;">No hay usuarios en línea en este momento.</p>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Script para actualizar y mostrar usuarios en línea -->
+<script>
+    $(document).ready(function() {
+        updateOnlineUsers();
+        setInterval(updateOnlineUsers, 30000);
+        function updateOnlineUsers() {
+            $.ajax({
+                url: '{% url "online_users" %}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    const onlineUsersContainer = $('#online-users');
+                    const noOnlineUsersMessage = $('#no-online-users-message');
+                    
+                    onlineUsersContainer.empty().append('<h3>Usuarios en línea:</h3>');
+
+                    if (data.online_users.length > 0) {
+                        for (const username of data.online_users) {
+                            onlineUsersContainer.append('<p>' + username + '</p>');
+                        }
+                        noOnlineUsersMessage.hide();
+                    } else {
+                        noOnlineUsersMessage.show();
+                    }
+                },
+            });
+        }
+    });
+</script>
+{% endblock %}

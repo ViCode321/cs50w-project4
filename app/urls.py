@@ -16,6 +16,8 @@ urlpatterns = [
     path('home/', views.home, name='home'),
     path('user_profile/', views.user_profile, name='user_profile'),    
     path('profile/', views.profile, name='profile'),
+    path('people/', views.people, name='people'),
+    path('online_users/', views.online_users, name='online_users'),
 ]
 
 # Configuración para servir archivos estáticos y de medios en modo de desarrollo
