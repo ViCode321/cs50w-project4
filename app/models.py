@@ -9,26 +9,11 @@ class CustomUser(AbstractUser):
     ]
 
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)    
-    location = models.CharField(max_length=100, blank=False, null=False)
+    location = models.CharField(max_length=100, blank=True, null=False)
     biography = models.TextField(blank=True, null=True)
     registration_date = models.DateTimeField(auto_now_add=True)
     gender = models.CharField(max_length=10, choices=gender_choices)
-    is_online = models.BooleanField(default=False)
-    session_key = models.CharField(max_length=32, blank=True, null=True)
-
-    def set_online(self):
-        self.is_online = True
-        self.save(update_fields=['is_online'])
-
-    def set_offline(self):
-        self.is_online = False
-        self.save(update_fields=['is_online'])
-
-    def save_session_key(self, request):
-        self.session_key = request.session.session_key
-        self.save(update_fields=['session_key'])
-    def check_password(self, raw_password):
-        return super().check_password(raw_password)
+    last_activity = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return f'{self.username} ({self.location or "N/A"})'    

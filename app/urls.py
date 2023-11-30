@@ -6,7 +6,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', login_view, name='start'),  # Redirige al login en la ruta raíz
+    path('', views.start, name='start'),  # Redirige al login en la ruta raíz
 #    path('', views.start, name='start'),  # Asociar la URL raíz a la vista de inicio
     path('login/', login_view, name='login'),    
 #    path('login/', views.login_view, name='login'),
@@ -16,8 +16,8 @@ urlpatterns = [
     path('home/', views.home, name='home'),
     path('user_profile/', views.user_profile, name='user_profile'),    
     path('profile/', views.profile, name='profile'),
-    path('people/', views.people, name='people'),
     path('online_users/', views.online_users, name='online_users'),
+    path('online_users_json/', views.online_users_json, name='online_users_json'),
 ]
 
 # Configuración para servir archivos estáticos y de medios en modo de desarrollo

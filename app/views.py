@@ -7,18 +7,21 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser, Post
-
+from django.contrib.sessions.models import Session
+from django.utils import timezone
+from datetime import timedelta
 
 def start(request):
-    return render(request, 'login.html')
+    return render(request, 'welcome.html')
 
+@login_required(login_url='login')
 def home(request):
     return render(request, 'home.html')
 
+@login_required(login_url='login')
 def profile(request):
     return render(request, 'profile.html')
 
-# views.py
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -26,20 +29,17 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            user.set_online()  # Marca al usuario como en línea al iniciar sesión
-            user.save_session_key(request)  # Guarda la clave de sesión en la base de datos
             return redirect('home')
         else:
             messages.error(request, 'Nombre de usuario o contraseña incorrectos')
             return render(request, 'login.html')
     return render(request, 'login.html')
 
+@login_required(login_url='login')
 def logout_view(request):
     logout(request)
     if request.user.is_authenticated:
-        request.user.set_offline()  # Marca al usuario como fuera de línea al cerrar sesión
-        request.user.session_key = None  # Elimina la clave de sesión de la base de datos
-        request.user.save(update_fields=['session_key'])
+        request.user.set_offline()
     return redirect('login')
 
 def register_view(request):
@@ -48,9 +48,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)            
-            # Envía el correo electrónico de bienvenida
             send_welcome_email(user.email, user.username)
-            # Redirige a la página de inicio de sesión u otra página después del registro.
             return redirect('foto')
         else:
             return render(request, 'register.html', {'form': form})         
@@ -65,7 +63,7 @@ def send_welcome_email(email, username):
     recipient_list = [email]
     send_mail(subject, message, from_email, recipient_list)
 
-@login_required
+@login_required(login_url='login')
 def foto_view(request):
     user = request.user
     location = user.location or 'Ubicación no disponible'
@@ -80,7 +78,7 @@ def foto_view(request):
     } 
     return render(request, 'foto.html', context)
 
-@login_required
+@login_required(login_url='login')
 def user_profile(request):
     user = request.user
 
@@ -101,18 +99,22 @@ def user_profile(request):
     }
     return render(request, 'foto.html', context)
 
+@login_required(login_url='login')
 def view_posts(request):
     posts = Post.objects.all()
     return render(request, 'view_posts.html', {'posts': posts})
 
-def people(request):
-    return render(request, 'people.html')
-
-@login_required
+@login_required(login_url='login')
 def online_users(request):
-    online_users = CustomUser.objects.filter(is_online=True)
-    usernames = [user.username for user in online_users]
-    return JsonResponse({'online_users': usernames})
+    active_users = CustomUser.objects.filter(last_activity__gte=timezone.now()-timedelta(minutes=5))
+    user_list = [user.username for user in active_users]
+    print("Aquí va la user_list: ", user_list)
+    return render(request, 'online_users.html', {'active_users': active_users})
+
+def online_users_json(request):
+    active_users = CustomUser.objects.filter(last_activity__gte=timezone.now()-timedelta(minutes=5))
+    user_list = [user.username for user in active_users]
+    return JsonResponse({'online_users': user_list})
 
 
 
