@@ -37,10 +37,12 @@ def login_view(request):
 
 @login_required(login_url='login')
 def logout_view(request):
-    logout(request)
     if request.user.is_authenticated:
-        request.user.set_offline()
+        request.user.last_activity = timezone.now() - timedelta(minutes=0.10)
+        request.user.save()
+    logout(request)
     return redirect('login')
+
 
 def register_view(request):
     if request.method == 'POST':
@@ -81,7 +83,6 @@ def foto_view(request):
 @login_required(login_url='login')
 def user_profile(request):
     user = request.user
-
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -106,19 +107,15 @@ def view_posts(request):
 
 @login_required(login_url='login')
 def online_users(request):
-    users = CustomUser.objects.all().exclude(username=request.user.username)
-    user_list = [{'username': user.username, 'is_active': user.is_active} for user in users]
-    return render(request, 'online_users.html', {'users': user_list})
+    return render(request, 'online_users.html')
 
-
+@login_required(login_url='login')
 def online_users_json(request):
-    active_users = CustomUser.objects.filter(last_activity__gte=timezone.now()-timedelta(minutes=5)).exclude(username=request.user.username)[:10]
-    inactive_users = CustomUser.objects.filter(last_activity__lt=timezone.now()-timedelta(minutes=5)).exclude(username=request.user.username)[:5]
-    active_user_list = [{'username': user.username, 'is_active': True} for user in active_users]
+    active_users = CustomUser.objects.filter(last_activity__gte=timezone.now()-timedelta(minutes=0.10)).exclude(username=request.user.username)[:5]
+    inactive_users = CustomUser.objects.filter(last_activity__lt=timezone.now()-timedelta(minutes=0.10)).exclude(username=request.user.username)[:5]
+    active_user_list = [{'username': user.username, 'is_active': True, 'profile_picture': str(user.profile_picture.url) if user.profile_picture else None, 'biography': user.biography} for user in active_users]
+    #active_user_list = [{'username': user.username, 'is_active': True} for user in active_users]
     inactive_user_list = [{'username': user.username, 'is_active': False} for user in inactive_users]
     print(active_user_list + inactive_user_list)
     return JsonResponse({'users': active_user_list + inactive_user_list})
-
-
-
 
