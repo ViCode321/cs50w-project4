@@ -5,11 +5,15 @@
 Personas
 {% endblock %}
 
-{% block main %}
+{% block main %}    
 <div class="container emp-profile">
     <div id="online-users">
         <div id="online-users-list"></div>
+        {% for user in users %}
+        <div class="user {% if user.is_active %}active{% else %}inactive{% endif %}">
+            {{ user.username }}
+        </div>
+        {% endfor %}    
     </div>
 </div>
 {% endblock %}
-

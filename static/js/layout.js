@@ -1,5 +1,7 @@
+
+
 // ---------Responsive-navbar-active-animation-----------
-function test(){
+/*function test(){
 	var tabsNewAnim = $('#navbarSupportedContent');
 	var selectorNewAnim = $('#navbarSupportedContent').find('li').length;
 	var activeItemNewAnim = tabsNewAnim.find('.active');
@@ -69,8 +71,7 @@ $("#navbarSupportedContent").on("click", "a", function (e) {
             $(".container").html(mainContent);
         }
     });
-});
-
+});**/
 
 
 

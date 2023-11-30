@@ -1,0 +1,23 @@
+.active::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    border-radius: 50%;
+    background-color: green;
+}
+
+.inactive::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    border-radius: 50%;
+    background-color: red;
+}
+
+.inactive {
+    background-color: #f0f0f0;
+}

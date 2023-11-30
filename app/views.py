@@ -106,15 +106,19 @@ def view_posts(request):
 
 @login_required(login_url='login')
 def online_users(request):
-    active_users = CustomUser.objects.filter(last_activity__gte=timezone.now()-timedelta(minutes=5))
-    user_list = [user.username for user in active_users]
-    print("Aquí va la user_list: ", user_list)
-    return render(request, 'online_users.html', {'active_users': active_users})
+    users = CustomUser.objects.all().exclude(username=request.user.username)
+    user_list = [{'username': user.username, 'is_active': user.is_active} for user in users]
+    return render(request, 'online_users.html', {'users': user_list})
+
 
 def online_users_json(request):
-    active_users = CustomUser.objects.filter(last_activity__gte=timezone.now()-timedelta(minutes=5))
-    user_list = [user.username for user in active_users]
-    return JsonResponse({'online_users': user_list})
+    active_users = CustomUser.objects.filter(last_activity__gte=timezone.now()-timedelta(minutes=5)).exclude(username=request.user.username)[:10]
+    inactive_users = CustomUser.objects.filter(last_activity__lt=timezone.now()-timedelta(minutes=5)).exclude(username=request.user.username)[:5]
+    active_user_list = [{'username': user.username, 'is_active': True} for user in active_users]
+    inactive_user_list = [{'username': user.username, 'is_active': False} for user in inactive_users]
+    print(active_user_list + inactive_user_list)
+    return JsonResponse({'users': active_user_list + inactive_user_list})
+
 
 
 
