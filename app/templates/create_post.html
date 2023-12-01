@@ -6,58 +6,60 @@ Crear Publicación
 {% endblock %}
 
 {% block main %}
-<div class="container emp-profile">    
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 col-md-offset-2">
-                <h1>Crear Publicación</h1>
-                <form action="" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="description">Descripción</label>
-                        <textarea rows="2" class="form-control" name="description"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="verse">Versículo Bíblico</label>
-                        <div class="d-flex">
-                            <select class="form-control mr-2" name="book" id="book" onchange="loadVerses()">
-                                <option value="" disabled selected>Selecciona un libro</option>
-                                <!-- Agrega opciones de libros aquí -->
-                            </select>
-                            <select class="form-control" name="verse" id="verse">
-                                <option value="" disabled selected>Selecciona un versículo</option>
-                                <!-- Los versículos se llenarán dinámicamente mediante JavaScript -->
-                            </select>
-                        </div>
-                    </div>                  
-                    <div class="form-group">
-                        <label for="image">Imagen/Audio</label>
-                        <div class="input-group">
-                            <input type="file" class="form-control" name="image" accept="image/*,audio/*">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" onclick="useBibleApi()">
-                                    Usar API de Bible.com
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Mostrar la imagen seleccionada de la API -->
-                    <div class="form-group" id="apiImagePreview" style="display: none;">
-                        <label>Imagen seleccionada</label>
-                        <img id="selectedApiImage" class="img-thumbnail" alt="Selected Image">
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">
-                            Crear Publicación
-                        </button>
-                        <button class="btn btn-default">
-                            Cancelar
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="container emp-profile">	
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-md-offset-2">
+				<h1>Crear Publicación</h1>
+				<form action="" method="POST" enctype="multipart/form-data">
+					<div class="form-group">
+						<label for="description">Descripción</label>
+						<textarea rows="2" class="form-control" name="description"></textarea>
+					</div>
+					<div class="form-group">
+						<label for="verse">Versículo Bíblico</label>
+						<div class="d-flex">
+							<select class="form-control mr-2" name="book" id="book" onchange="loadChapter()">
+								<option value="" disabled selected>Selecciona un libro</option>
+								<!-- Agrega opciones de libros aquí -->
+							</select>
+							<select class="form-control mr-2" name="chapter" id="chapter" onchange="loadVerse()">
+								<option value="" disabled selected>Selecciona un capítulo</option>
+								<!-- Los capítulos se llenarán dinámicamente mediante JavaScript -->
+							</select>
+							<select class="form-control" name="verse" id="verse">
+								<option value="" disabled selected>Selecciona un versículo</option>
+								<!-- Los versículos se llenarán dinámicamente mediante JavaScript -->
+							</select>
+						</div>
+						<div class="form-group mt-2">
+							<label for="bible-quote">Cita Bíblica</label>
+							<textarea rows="2" class="form-control" name="bible-quote" id="bible-quote" readonly></textarea>
+						</div>
+					</div>					
+					<div class="form-group">
+						<label for="image">Imagen/Audio</label>
+						<div class="input-group">
+							<input type="file" class="form-control" name="image" accept="image/*,audio/*">
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary" type="button">
+									Usar API de Bible.com
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">
+							Crear Publicación
+						</button>
+						<button class="btn btn-default">
+							Cancelar
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script>
@@ -83,9 +85,9 @@ async function useBibleApi() {
     });
 }
 
-async function loadVerses() {
+async function loadChapter() {
     const bookSelect = document.getElementById('book');
-    const verseSelect = document.getElementById('verse');
+    const chapterSelect = document.getElementById('chapter');
     const selectedBookId = bookSelect.value;
 
     const response = await fetch(`https://api.scripture.api.bible/v1/bibles/482ddd53705278cc-02/books/${selectedBookId}/chapters`, {
@@ -97,39 +99,55 @@ async function loadVerses() {
 
     const data = await response.json();
 
-    verseSelect.innerHTML = '<option value="" disabled selected>Selecciona un versículo</option>';
+    chapterSelect.innerHTML = '<option value="" disabled selected>Selecciona un capítulo</option>';
 
     data.data.forEach(chapter => {
         const option = document.createElement('option');
         option.value = chapter.id;
         option.text = chapter.reference;
-        verseSelect.add(option);
+        chapterSelect.add(option);
     });
 }
 
-// Muestra la imagen seleccionada de la API
-function showSelectedApiImage(input) {
-    const apiImagePreview = document.getElementById('apiImagePreview');
-    const selectedApiImage = document.getElementById('selectedApiImage');
+async function loadVerse() {
+    const chapterSelect = document.getElementById('chapter');
+    const verseSelect = document.getElementById('verse');
+    const bibleQuote = document.getElementById('bible-quote');
+    const selectedChapterId = chapterSelect.value;
 
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            selectedApiImage.src = e.target.result;
-            apiImagePreview.style.display = 'block';
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
+    const response = await fetch(`https://api.scripture.api.bible/v1/bibles/482ddd53705278cc-02/chapters/${selectedChapterId}/verses`, {
+        method: 'GET',
+        headers: {
+            'api-key': 'afcfd6b34e8710d8c491b85857b75ecc'
+        }
+    });
+
+    const data = await response.json();
+
+    verseSelect.innerHTML = '<option value="" disabled selected>Selecciona un versículo</option>';
+
+    data.data.forEach(verse => {
+        const option = document.createElement('option');
+        option.value = verse.id;
+        option.text = verse.reference;
+        verseSelect.add(option);
+    });
+
+    verseSelect.onchange = async function() {
+        const selectedVerseId = verseSelect.value;
+
+        const response = await fetch(`https://api.scripture.api.bible/v1/bibles/482ddd53705278cc-02/verses/${selectedVerseId}`, {
+            method: 'GET',
+            headers: {
+                'api-key': 'afcfd6b34e8710d8c491b85857b75ecc'
+            }
+        });
+
+        const data = await response.json();
+
+        bibleQuote.value = data.data.content;
+    };
 }
-
-// Configura el evento change para el input de imagen
-const imageInput = document.querySelector('input[name="image"]');
-imageInput.addEventListener('change', function() {
-    showSelectedApiImage(this);
-});
-
-// Llama a useBibleApi cuando se carga la página
 useBibleApi();
 </script>
-
 {% endblock %}
