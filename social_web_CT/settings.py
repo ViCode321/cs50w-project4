@@ -30,7 +30,7 @@ AUTH_USER_MODEL = 'app.CustomUser'
 ALLOWED_HOSTS = []
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
-
+API_KEY = "afcfd6b34e8710d8c491b85857b75ecc"
 
 # Configuración para enviar correos electrónicos
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -14,20 +14,12 @@ class CustomUser(AbstractUser):
     registration_date = models.DateTimeField(auto_now_add=True)
     gender = models.CharField(max_length=10, choices=gender_choices)
     last_activity = models.DateTimeField(auto_now=True)    
+    
     def set_offline(self):
         self.last_activity = timezone.now()
         self.save()
     def __str__(self):
         return f'{self.username} ({self.location or "N/A"})'    
-
-class Group(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
-    creation_date = models.DateTimeField(auto_now_add=True)
-
-class UserGroup(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
 class Post(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -39,10 +31,3 @@ class Comment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     content = models.TextField()
     comment_date = models.DateTimeField(auto_now_add=True)
-
-class PrivateMessage(models.Model):
-    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sent_messages')
-    receiver = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='received_messages')
-    content = models.TextField()
-    send_date = models.DateTimeField(auto_now_add=True)
-    read = models.BooleanField(default=False)

@@ -18,6 +18,7 @@ urlpatterns = [
     path('online_users_json/', views.online_users_json, name='online_users_json'),
     path('post/', views.view_posts, name='post'),
     path('create_post/', views.create_post, name='create_post'),
+    path('view_posts/', views.view_posts, name='view_posts'),
 
 ]
 

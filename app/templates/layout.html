@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/online_user.css' %}">
     <link rel="stylesheet" href="{% static 'css/layout.css' %}">
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-  
+    <link rel="stylesheet" href="{% static 'css/create_post.css' %}">
     <title>{% block title %}{% endblock %}</title>        
 </head>
 <body>
@@ -35,9 +35,9 @@
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="{% url 'create_post' %}">
               <button class="px-4 py-2 hover:bg-gray-800 transition-colors rounded-lg">
-                Shop
+                Publicar
               </button>
             </a>
           </li>
@@ -78,8 +78,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script> var onlineUsersUrl = "{% url 'online_users_json' %}"; </script>
     <script src="{% static 'js/online_users.js' %}"></script>
-
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!--<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>-->
 
 </body>
 </html>

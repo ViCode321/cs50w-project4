@@ -1,4 +1,3 @@
-<!-- home.html -->
 {% extends "layout.html" %}
 {% load static %}
 
@@ -6,48 +5,131 @@
 Crear Publicación
 {% endblock %}
 
-<div class="container">
-	<div class="row">
-	    
-	    <div class="col-md-8 col-md-offset-2">
-	        
-    		<h1>Create post</h1>
-    		
-    		<form action="" method="POST">
-    		    
-    		    <div class="form-group has-error">
-    		        <label for="slug">Slug <span class="require">*</span> <small>(This field use in url path.)</small></label>
-    		        <input type="text" class="form-control" name="slug" />
-    		        <span class="help-block">Field not entered!</span>
-    		    </div>
-    		    
-    		    <div class="form-group">
-    		        <label for="title">Title <span class="require">*</span></label>
-    		        <input type="text" class="form-control" name="title" />
-    		    </div>
-    		    
-    		    <div class="form-group">
-    		        <label for="description">Description</label>
-    		        <textarea rows="5" class="form-control" name="description" ></textarea>
-    		    </div>
-    		    
-    		    <div class="form-group">
-    		        <p><span class="require">*</span> - required fields</p>
-    		    </div>
-    		    
-    		    <div class="form-group">
-    		        <button type="submit" class="btn btn-primary">
-    		            Create
-    		        </button>
-    		        <button class="btn btn-default">
-    		            Cancel
-    		        </button>
-    		    </div>
-    		    
-    		</form>
-		</div>
-		
-	</div>
+{% block main %}
+<div class="container emp-profile">    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-md-offset-2">
+                <h1>Crear Publicación</h1>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="description">Descripción</label>
+                        <textarea rows="2" class="form-control" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="verse">Versículo Bíblico</label>
+                        <div class="d-flex">
+                            <select class="form-control mr-2" name="book" id="book" onchange="loadVerses()">
+                                <option value="" disabled selected>Selecciona un libro</option>
+                                <!-- Agrega opciones de libros aquí -->
+                            </select>
+                            <select class="form-control" name="verse" id="verse">
+                                <option value="" disabled selected>Selecciona un versículo</option>
+                                <!-- Los versículos se llenarán dinámicamente mediante JavaScript -->
+                            </select>
+                        </div>
+                    </div>                  
+                    <div class="form-group">
+                        <label for="image">Imagen/Audio</label>
+                        <div class="input-group">
+                            <input type="file" class="form-control" name="image" accept="image/*,audio/*">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" onclick="useBibleApi()">
+                                    Usar API de Bible.com
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mostrar la imagen seleccionada de la API -->
+                    <div class="form-group" id="apiImagePreview" style="display: none;">
+                        <label>Imagen seleccionada</label>
+                        <img id="selectedApiImage" class="img-thumbnail" alt="Selected Image">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            Crear Publicación
+                        </button>
+                        <button class="btn btn-default">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
-{% block main %}
+<script>
+
+async function useBibleApi() {
+    const response = await fetch('https://api.scripture.api.bible/v1/bibles/482ddd53705278cc-02/books', {
+        method: 'GET',
+        headers: {
+            'api-key': 'afcfd6b34e8710d8c491b85857b75ecc'
+        }
+    });
+
+    const data = await response.json();
+
+    const bookSelect = document.getElementById('book');
+    bookSelect.innerHTML = '<option value="" disabled selected>Selecciona un libro</option>';
+
+    data.data.forEach(book => {
+        const option = document.createElement('option');
+        option.value = book.id;
+        option.text = book.name;
+        bookSelect.add(option);
+    });
+}
+
+async function loadVerses() {
+    const bookSelect = document.getElementById('book');
+    const verseSelect = document.getElementById('verse');
+    const selectedBookId = bookSelect.value;
+
+    const response = await fetch(`https://api.scripture.api.bible/v1/bibles/482ddd53705278cc-02/books/${selectedBookId}/chapters`, {
+        method: 'GET',
+        headers: {
+            'api-key': 'afcfd6b34e8710d8c491b85857b75ecc'
+        }
+    });
+
+    const data = await response.json();
+
+    verseSelect.innerHTML = '<option value="" disabled selected>Selecciona un versículo</option>';
+
+    data.data.forEach(chapter => {
+        const option = document.createElement('option');
+        option.value = chapter.id;
+        option.text = chapter.reference;
+        verseSelect.add(option);
+    });
+}
+
+// Muestra la imagen seleccionada de la API
+function showSelectedApiImage(input) {
+    const apiImagePreview = document.getElementById('apiImagePreview');
+    const selectedApiImage = document.getElementById('selectedApiImage');
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            selectedApiImage.src = e.target.result;
+            apiImagePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Configura el evento change para el input de imagen
+const imageInput = document.querySelector('input[name="image"]');
+imageInput.addEventListener('change', function() {
+    showSelectedApiImage(this);
+});
+
+// Llama a useBibleApi cuando se carga la página
+useBibleApi();
+</script>
+
+{% endblock %}
