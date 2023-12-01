@@ -1,11 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
 
-body {
-  background-color: #eee;
-  font-family: "Poppins", sans-serif;
-  font-weight: 300
-}
-
 .card {
   border: none
 }
@@ -15,7 +9,7 @@ body {
 }
 
 hr {
-  color: #a09c9c;
+  color: #aea9a9;
   margin-top: 4px;
   margin-bottom: 8px
 }
@@ -41,15 +35,6 @@ hr {
 .icons .fa-smile-o {
   color: yellow;
   font-size: 29px
-}
-
-.rounded-image {
-  border-radius: 50% !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50px;
-  width: 50px
 }
 
 .name {
@@ -81,9 +66,43 @@ hr {
 }
 
 .form-control:focus {
-  color: #495057;
+  color: #000000;
   background-color: #fff;
   border-color: #8bbafe;
   outline: 0;
   box-shadow: none
+}
+
+
+.bdge {
+height: 21px;
+background-color: orange;
+color: #fff;
+font-size: 11px;
+padding: 8px;
+border-radius: 4px;
+line-height: 3px;
+}
+
+.comments {
+text-decoration: underline;
+text-underline-position: under;
+cursor: pointer;
+}
+
+.dot {
+height: 7px;
+width: 7px;
+margin-top: 3px;
+background-color: #bbb;
+border-radius: 50%;
+display: inline-block;
+}
+
+.hit-voting:hover {
+color: blue;
+}
+
+.hit-voting {
+cursor: pointer;
 }

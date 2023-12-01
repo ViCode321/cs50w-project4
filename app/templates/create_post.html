@@ -7,150 +7,131 @@ Crear Publicación
 
 {% block main %}
 <div class="container emp-profile">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12 col-md-offset-2">
-				<h1>Crear Publicación</h1>
-				<form action="" method="POST" enctype="multipart/form-data">
-					<div class="form-group">
-						<label for="description">Descripción</label>
-						<textarea rows="2" class="form-control" name="description"></textarea>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 col-md-offset-2">
+			<h1>Crear Publicación</h1>
+			<form action="" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="description">Descripción</label>
+					<textarea rows="2" class="form-control" name="description"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="verse">Versículo Bíblico</label>
+					<div class="d-flex">
+						<select class="form-control mr-2" name="book" id="book" onchange="loadChapter()">
+							<option value="" disabled selected>Selecciona un libro</option>
+							<!-- Agrega opciones de libros aquí -->
+						</select>
+						<select class="form-control mr-2" name="chapter" id="chapter" onchange="loadVerse()">
+							<option value="" disabled selected>Selecciona un capítulo</option>
+							<!-- Los capítulos se llenarán dinámicamente mediante JavaScript -->
+						</select>
+						<select class="form-control" name="verse" id="verse">
+							<option value="" disabled selected>Selecciona un versículo</option>
+							<!-- Los versículos se llenarán dinámicamente mediante JavaScript -->
+						</select>
 					</div>
-					<div class="form-group">
-						<label for="verse">Versículo Bíblico</label>
-						<div class="d-flex">
-							<select class="form-control mr-2" name="book" id="book" onchange="loadChapter()">
-								<option value="" disabled selected>Selecciona un libro</option>
-								<!-- Agrega opciones de libros aquí -->
-							</select>
-							<select class="form-control mr-2" name="chapter" id="chapter" onchange="loadVerse()">
-								<option value="" disabled selected>Selecciona un capítulo</option>
-								<!-- Los capítulos se llenarán dinámicamente mediante JavaScript -->
-							</select>
-							<select class="form-control" name="verse" id="verse">
-								<option value="" disabled selected>Selecciona un versículo</option>
-								<!-- Los versículos se llenarán dinámicamente mediante JavaScript -->
-							</select>
-						</div>
-						<div class="form-group mt-2">
-							<label for="bible-quote">Cita Bíblica</label>
-							<textarea rows="2" class="form-control" name="bible-quote" id="bible-quote"
-								readonly></textarea>
-						</div>
+					<div class="form-group mt-2">
+						<label for="bible-quote">Cita Bíblica</label>
+						<textarea rows="2" class="form-control" name="bible_quote" id="bible_quote"
+							readonly></textarea>
 					</div>
-					<div class="form-group">
-						<label for="image">Imagen/Audio</label>
-						<div class="input-group">
-							<input type="file" class="form-control" name="image" accept="image/*,audio/*">
-							<div class="input-group-append">
-								<button class="btn btn-outline-secondary" type="button">
-									Usar API de Bible.com
-								</button>
-							</div>
-						</div>
+				</div>
+				<div class="form-group">
+					<label for="description">Comentario fijado</label>
+					<textarea rows="1" class="form-control" name="pinned_comment"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="image">Imagen</label>
+					<div class="input-group">
+						<input type="file" class="form-control" name="image" accept="image">
 					</div>
-					<div class="form-group">
-						<button type="submit" class="btn btn-primary">
-							Crear Publicación
-						</button>
-						<button class="btn btn-default">
-							Cancelar
-						</button>
-					</div>
-				</form>
-			</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary">Crear Publicación</button>
+					<a href="{% url 'home' %}" class="btn btn-default">Cancelar</a>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
+</div>
 <script>
-	async function useBibleApi() {
-		const response = await fetch('https://api.scripture.api.bible/v1/bibles/482ddd53705278cc-02/books', {
-			method: 'GET',
-			headers: {
-				'api-key': 'afcfd6b34e8710d8c491b85857b75ecc'
-			}
-		});
-		const data = await response.json();
-		const bookSelect = document.getElementById('book');
-		bookSelect.innerHTML = '<option value="" disabled selected>Selecciona un libro</option>';
-		data.data.forEach(book => {
-			const option = document.createElement('option');
-			option.value = book.id;
-			option.text = book.name;
-			bookSelect.add(option);
-		});
-	}
-	async function loadChapter() {
-		const bookSelect = document.getElementById('book');
-		const chapterSelect = document.getElementById('chapter');
-		const selectedBookId = bookSelect.value;
+async function useBibleApi() {
+	const response = await fetch('https://api.scripture.api.bible/v1/bibles/592420522e16049f-01/books', {
+		method: 'GET',
+		headers: {
+			'api-key': '75cdb572b08940c6905f0781a79e42a3'
+		}
+	});
+	const data = await response.json();
+	const bookSelect = document.getElementById('book');
+	bookSelect.innerHTML = '<option value="" disabled selected>Selecciona un libro</option>';
+	data.data.forEach(book => {
+		const option = document.createElement('option');
+		option.value = book.id;
+		option.text = book.name;
+		bookSelect.add(option);
+	});
+}
+async function loadChapter() {
+	const bookSelect = document.getElementById('book');
+	const chapterSelect = document.getElementById('chapter');
+	const selectedBookId = bookSelect.value;
 
-		const response = await fetch(`https://api.scripture.api.bible/v1/bibles/482ddd53705278cc-02/books/${selectedBookId}/chapters`, {
-			method: 'GET',
-			headers: {
-				'api-key': 'afcfd6b34e8710d8c491b85857b75ecc'
-			}
-		});
-		const data = await response.json();
-		chapterSelect.innerHTML = '<option value="" disabled selected>Selecciona un capítulo</option>';
-		data.data.forEach(chapter => {
-			const option = document.createElement('option');
-			option.value = chapter.id;
-			option.text = chapter.reference;
-			chapterSelect.add(option);
-		});
-	}
+	const response = await fetch(`https://api.scripture.api.bible/v1/bibles/592420522e16049f-01/books/${selectedBookId}/chapters`, {
+		method: 'GET',
+		headers: {
+			'api-key': '75cdb572b08940c6905f0781a79e42a3'
+		}
+	});
+	const data = await response.json();
+	chapterSelect.innerHTML = '<option value="" disabled selected>Selecciona un capítulo</option>';
+	data.data.forEach(chapter => {
+		const option = document.createElement('option');
+		option.value = chapter.id;
+		option.text = chapter.reference;
+		chapterSelect.add(option);
+	});
+}
 
-	function cleanHTML(input) {
-    // Crear un nuevo elemento div
-    var doc = new DOMParser().parseFromString(input, 'text/html');
-    // Usa textContent para obtener el contenido de texto del elemento
-    return doc.body.textContent || "";
+function cleanHTML(input) {
+// Crear un nuevo elemento div
+var doc = new DOMParser().parseFromString(input, 'text/html');
+// Usa textContent para obtener el contenido de texto del elemento
+return doc.body.textContent || "";
 }
 
 async function loadVerse() {
     const chapterSelect = document.getElementById('chapter');
     const verseSelect = document.getElementById('verse');
-    const bibleQuote = document.getElementById('bible-quote');
+    const bibleQuote = document.getElementById('bible_quote');
     const selectedChapterId = chapterSelect.value;
-
-    const response = await fetch(`https://api.scripture.api.bible/v1/bibles/482ddd53705278cc-02/chapters/${selectedChapterId}/verses`, {
-        method: 'GET',
-        headers: {
-            'api-key': 'afcfd6b34e8710d8c491b85857b75ecc'
-        }
-    });
-
+    const response = await fetch(`https://api.scripture.api.bible/v1/bibles/592420522e16049f-01/chapters/${selectedChapterId}/verses`, {
+        method: 'GET', headers: { 'api-key': '75cdb572b08940c6905f0781a79e42a3' }
+    }); 
     const data = await response.json();
-
     verseSelect.innerHTML = '<option value="" disabled selected>Selecciona un versículo</option>';
-
     data.data.forEach(verse => {
-        const option = document.createElement('option');
+        const option = document.createElement('option'); 
         option.value = verse.id;
-        option.text = verse.reference;
+        option.text = verse.reference; 
         verseSelect.add(option);
-    });
-
-    verseSelect.onchange = async function() {
+    }); 
+    verseSelect.onchange = async function () {
         const selectedVerseId = verseSelect.value;
-
-        const response = await fetch(`https://api.scripture.api.bible/v1/bibles/482ddd53705278cc-02/verses/${selectedVerseId}`, {
-            method: 'GET',
-            headers: {
-                'api-key': 'afcfd6b34e8710d8c491b85857b75ecc'
-            }
-        });
-
+        const response = await fetch(`https://api.scripture.api.bible/v1/bibles/592420522e16049f-01/verses/${selectedVerseId}`, {
+            method: 'GET', headers: { 'api-key': '75cdb572b08940c6905f0781a79e42a3' }
+        }); 
         const data = await response.json();
-
-        // Limpia el contenido HTML antes de mostrarlo
-        const verseText = cleanHTML(data.data.content);
-        // Incluye la referencia del versículo junto con el texto del versículo
-        bibleQuote.value = verseSelect.options[verseSelect.selectedIndex].text + " = " + verseText;
+        let verseText = cleanHTML(data.data.content);
+        verseText = verseText.replace(/^\d+/, ''); // Elimina el número al principio del texto
+        bibleQuote.value = verseSelect.options[verseSelect.selectedIndex].text + ": " + verseText;
     };
 }
 
-	useBibleApi();
+useBibleApi();
 </script>
 {% endblock %}

@@ -5,21 +5,43 @@
 Personas
 {% endblock %}
 
-{% block main %}    
+{% block main %}
+<style>
+    .user-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 25%;
+        border: 2px solid #565656;
+    }
+</style>
 <div class="container emp-profile">
     <div id="online-users">
-        <div id="online-users-list" class="user-list"></div>
-        {% for user in users %}
-        <div class="user {% if user.is_active %}active{% else %}inactive{% endif %}">
-            {% if user.profile_picture %}
-            <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}">
-            {% endif %}
-            <div class="user-info">
-                <h3>{{ user.username }}</h3>
-                <p>{{ user.biography }}</p>
+        <div id="online-users-list" class="row">
+            {% for user in users %}
+            <div class="col-xl-6 col-lg-7 col-md-12">
+                <div class="card profile-header">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-12">
+                                <div class="profile-image float-md-right">
+                                    {% if user.profile_picture %}
+                                    <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-12">
+                                <h4 class="m-t-0 m-b-0"><strong>{{ user.username }}</strong></h4>
+                                <span class="job_post">{% if user.is_active %}Activo{% else %}Inactivo{% endif %}</span>
+                                <p>{{ user.biography }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}    
     </div>
 </div>
+
 {% endblock %}

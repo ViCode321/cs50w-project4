@@ -2,14 +2,14 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from app.forms import RegistrationForm, UserProfileForm
+from app.forms import PostForm, RegistrationForm, UserProfileForm
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from .models import CustomUser, Post
-from django.contrib.sessions.models import Session
+from .models import CustomUser, Post, Comment
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 #------------------- Registro, Acceso y Salida de Usuario -------------------
 
@@ -129,12 +129,34 @@ def user_profile(request):
 @login_required(login_url='login')
 def view_posts(request):
     posts = Post.objects.all()
-    return render(request, 'post.html', {'posts': posts})
+    return render(request, 'home.html', {'posts': posts, 'naturaltime': naturaltime})
 
+@login_required(login_url='login')
+def view_posts2(request):
+    posts = Post.objects.all()
+    return render(request, 'post.html', {'posts': posts, 'naturaltime': naturaltime})
+    
 #Crear post
 @login_required(login_url='login')
 def create_post(request):
-    return render(request, 'create_post.html')
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('home')
+    else:
+        form = PostForm()
+    return render(request, 'create_post.html', {'form': form})
+
+def add_comment(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        comment = Comment.objects.create(post=post, user=request.user, content=content)
+        return JsonResponse({'user': comment.user.username, 'content': comment.content, 'comment_date': comment.comment_date})
+    return redirect('home')
 
 
 #------------------- Funciones extra -------------------
@@ -146,6 +168,4 @@ def send_welcome_email(email, username):
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message, from_email, recipient_list)
-
-
 
