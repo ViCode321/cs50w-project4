@@ -9,7 +9,7 @@ $(document).ready(function(){
             onlineUsersDiv.empty();
     
             if (users.length > 0) {
-                onlineUsersDiv.append('<h3>Usuarios:</h3>');
+                /*onlineUsersDiv.append('<h3>Usuarios:</h3>');*/
                 for (var i = 0; i < users.length; i++) {
                     var userDiv = $('<div class="user"></div>');
                     if (users[i].is_active) {

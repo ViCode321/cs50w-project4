@@ -11,17 +11,9 @@ from django.contrib.sessions.models import Session
 from django.utils import timezone
 from datetime import timedelta
 
-def start(request):
-    return render(request, 'welcome.html')
+#------------------- Registro, Acceso y Salida de Usuario -------------------
 
-@login_required(login_url='login')
-def home(request):
-    return render(request, 'home.html')
-
-@login_required(login_url='login')
-def profile(request):
-    return render(request, 'profile.html')
-
+#Acceso
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -35,15 +27,7 @@ def login_view(request):
             return render(request, 'login.html')
     return render(request, 'login.html')
 
-@login_required(login_url='login')
-def logout_view(request):
-    if request.user.is_authenticated:
-        request.user.last_activity = timezone.now() - timedelta(minutes=0.10)
-        request.user.save()
-    logout(request)
-    return redirect('login')
-
-
+#Registro
 def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)           
@@ -58,13 +42,51 @@ def register_view(request):
         form = RegistrationForm()
     return render(request, 'register.html', {'form': form})
 
-def send_welcome_email(email, username):
-    subject = f'¡Hola {username}! Bienvenido a Christians Together!'
-    message = 'Gracias por registrarte en Christians Together. Esperamos que disfrutes de nuestra plataforma.'
-    from_email = settings.EMAIL_HOST_USER
-    recipient_list = [email]
-    send_mail(subject, message, from_email, recipient_list)
+#Salida
+@login_required(login_url='login')
+def logout_view(request):
+    if request.user.is_authenticated:
+        request.user.last_activity = timezone.now() - timedelta(minutes=0.10)
+        request.user.save()
+    logout(request)
+    return redirect('login')
 
+#------------------- Vista de Usuarios -------------------
+
+#Bienvenida
+def start(request):
+    return render(request, 'welcome.html')
+
+#Incio
+@login_required(login_url='login')
+def home(request):
+    return render(request, 'home.html')
+
+#Perfil
+@login_required(login_url='login')
+def profile(request):
+    return render(request, 'profile.html')
+
+#------------------- Actividad de Usuarios -------------------
+
+#Vista usuario en linea
+@login_required(login_url='login')
+def online_users(request):
+    return render(request, 'online_users.html')
+
+#Usuarios en linea
+@login_required(login_url='login')
+def online_users_json(request):
+    active_users = CustomUser.objects.filter(last_activity__gte=timezone.now()-timedelta(minutes=0.10)).exclude(username=request.user.username)[:5]
+    inactive_users = CustomUser.objects.filter(last_activity__lt=timezone.now()-timedelta(minutes=0.10)).exclude(username=request.user.username)[:5]
+    active_user_list = [{'username': user.username, 'is_active': True, 'profile_picture': str(user.profile_picture.url) if user.profile_picture else None, 'biography': user.biography} for user in active_users]
+    inactive_user_list = [{'username': user.username, 'is_active': False} for user in inactive_users]
+    print(active_user_list + inactive_user_list)
+    return JsonResponse({'users': active_user_list + inactive_user_list})
+
+#------------------- Configuración de perfiles usuarios -------------------
+
+#Vista de perfiles de usuarios
 @login_required(login_url='login')
 def foto_view(request):
     user = request.user
@@ -74,12 +96,13 @@ def foto_view(request):
         'first_name': user.first_name,
         'last_name': user.last_name,
         'username': user.username,
-        'password': '********',  # Puedes obtener esto de la manera que desees
+        'password': '********',
         'location': location,
         'email': user.email,
     } 
     return render(request, 'foto.html', context)
 
+#Acualizar usuario
 @login_required(login_url='login')
 def user_profile(request):
     user = request.user
@@ -100,22 +123,29 @@ def user_profile(request):
     }
     return render(request, 'foto.html', context)
 
+#------------------- Post de usuarios -------------------
+
+#Vista de los posts
 @login_required(login_url='login')
 def view_posts(request):
     posts = Post.objects.all()
-    return render(request, 'view_posts.html', {'posts': posts})
+    return render(request, 'post.html', {'posts': posts})
 
+#Crear post
 @login_required(login_url='login')
-def online_users(request):
-    return render(request, 'online_users.html')
+def create_post(request):
+    return render(request, 'create_post.html')
 
-@login_required(login_url='login')
-def online_users_json(request):
-    active_users = CustomUser.objects.filter(last_activity__gte=timezone.now()-timedelta(minutes=0.10)).exclude(username=request.user.username)[:5]
-    inactive_users = CustomUser.objects.filter(last_activity__lt=timezone.now()-timedelta(minutes=0.10)).exclude(username=request.user.username)[:5]
-    active_user_list = [{'username': user.username, 'is_active': True, 'profile_picture': str(user.profile_picture.url) if user.profile_picture else None, 'biography': user.biography} for user in active_users]
-    #active_user_list = [{'username': user.username, 'is_active': True} for user in active_users]
-    inactive_user_list = [{'username': user.username, 'is_active': False} for user in inactive_users]
-    print(active_user_list + inactive_user_list)
-    return JsonResponse({'users': active_user_list + inactive_user_list})
+
+#------------------- Funciones extra -------------------
+
+#Enviar correo
+def send_welcome_email(email, username):
+    subject = f'¡Hola {username}! Bienvenido a Christians Together!'
+    message = 'Gracias por registrarte en Christians Together. Esperamos que disfrutes de nuestra plataforma.'
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+    send_mail(subject, message, from_email, recipient_list)
+
+
 
