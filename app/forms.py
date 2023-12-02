@@ -34,4 +34,4 @@ class UserProfileForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['description', 'bible_quote', 'pinned_comment', 'image']
+        fields = ['description', 'bible_quote', 'image']

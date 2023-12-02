@@ -1,96 +1,107 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{% static 'logo.jpg' %}" rel="icon" type="image/jpg">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
-  
-    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">-->
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" >    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/online_user.css' %}">
-    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-    <link rel="stylesheet" href="{% static 'css/create_post.css' %}">
-    <link href="{% static 'css/post.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/online_user.css' %}">
+  <!--<link rel="stylesheet" href="{% static 'css/layout.css' %}">-->
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+  <link rel="stylesheet" href="{% static 'css/create_post.css' %}">
+  <link href="{% static 'css/post.css' %}">
+  <style>
+    .navbar {
+        min-height: 40px;
+        background: -webkit-gradient(linear, left top, right top, from(#6a1b9a), to(#000000));
+        background: linear-gradient(to right, #000000, #6a1b9a);
+    }
 
-    <title>{% block title %}{% endblock %}</title>        
+    .navbar li {
+        display: inline;
+    }
+
+    .navbar button {
+        padding: 5px 10px;
+        color: white;
+        text-decoration: none;
+        transition: background-color 0.3s, color 0.3s; /* Agregado para suavizar la transición */
+    }
+
+    .navbar button:hover {
+        background-color: gray;
+        color: white;
+    }
+
+    .navbar button.activ {
+        background-color: white;
+        color: black;
+    }
+</style>
+
+  <title>{% block title %}{% endblock %}</title>
 </head>
-<body>
-    <nav class="flex items-center bg-gray-900 text-white justify-between p-5 shadow-lg text-sm font-medium">
-        <a href="#">
-          <img src="{% static 'images/logo.jpg' %}" class="w-10 h-10 rounded-full"" />
-        </a>
-        <ul class="flex gap-3 items-center">
-          <li>
+
+<body style="background-image: linear-gradient(315deg, #9c27b0 0%, #6a1b9a 74%); background-color: #9c27b0;">
+  <nav class="flex items-center text-white justify-between p-3 shadow-lg text-sm font-medium navbar">
+    <a href="{% url 'home' %}">
+      <img src="{% static 'images/logo.jpg' %}" class="w-10 h-10 rounded-full" />
+    </a>
+    <ul class="flex gap-3 items-center">
+        <li>
             <a href="{% url 'home' %}">
-              <button class="px-4 py-2 hover:bg-gray-800 transition-colors rounded-lg">
-                Inicio
-              </button>
+                <button class="px-4 py-2 hover:bg-gray-800 transition-colors rounded-lg {% if request.path == '/home/' %}activ{% endif %}">
+                  <i class="fas fa-home"></i> Inicio                  
+                    Inicio
+                </button>
             </a>
-          </li>
-          <li>
+        </li>
+        <li>
             <a href="{% url 'online_users' %}">
-              <button class="px-4 py-2 hover:bg-gray-800 transition-colors rounded-lg">
-                Personas
-              </button>
+                <button class="px-4 py-2 hover:bg-gray-800 transition-colors rounded-lg {% if request.path == '/online_users/' %}activ{% endif %}">
+                  <i class="fas fa-users"></i> Personas
+                    Personas
+                </button>
             </a>
-          </li>
-          <li>
+        </li>
+        <li>
             <a href="{% url 'create_post' %}">
-              <button class="px-4 py-2 hover:bg-gray-800 transition-colors rounded-lg">
-                Publicar
-              </button>
+                <button class="px-4 py-2 hover:bg-gray-800 transition-colors rounded-lg {% if request.path == '/create_post/' %}activ{% endif %}">
+                  <i class="fas fa-edit"></i> Publicar                  
+                    Publicar
+                </button>
             </a>
-          </li>
-          <li>
-            <a href="{% url 'post' %}">
-              <button class="px-4 py-2 hover:bg-gray-800 transition-colors rounded-lg">
-                Services
-              </button>
-            </a>
-          </li>
-        </ul>
-        <ul class="flex items-center gap-3">
-          <li>
-            <button class="w-10 h-10 grid place-content-center hover:bg-gray-800 rounded-lg transition-colors">
-              <i class="fa-solid fa-bell"></i>
-            </button>
-          </li>
-          <li>
-            <a href="{% url 'profile' %}">
-            <button>
-              <img src="{{ user.profile_picture.url }}" alt="avatar" class="w-10 h-10 rounded-full" />
-            </button>
+        </li>
+    </ul>
+    <ul class="flex items-center gap-3">
+      <li>
+        <a href="{% url 'profile' %}">
+          <button">
+            <img src="{{ user.profile_picture.url }}" alt="avatar" class="w-10 h-10 rounded-full"/>
+          </button>
         </a>
-          </li>
-        </ul>
-      </nav>
+      </li>
+    </ul>
+  </nav>
 
-    <div class="container">
-        {% block main %}{% endblock %}
-    </div>
+  <div class="container">
+    {% block main %}{% endblock %}
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-5ZgRUfS0hUZqE4K9W77iRDi6i4ZsyZSZSTSNKlpjY0nU5Q7tSHiox+cq+D7K7+q" crossorigin="anonymous"></script>-->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
-    <!--<script src="{% static 'js/layout.js' %}"></script>-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script> var onlineUsersUrl = "{% url 'online_users_json' %}"; </script>
-    <script src="{% static 'js/online_users.js' %}"></script>
-    <!--<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>-->
-  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script> var onlineUsersUrl = "{% url 'online_users_json' %}"; </script>
+  <script src="{% static 'js/online_users.js' %}"></script>
 </body>
+
 </html>

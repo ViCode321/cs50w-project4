@@ -26,7 +26,6 @@ class Post(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
     bible_quote = models.TextField(blank=True, null=True)
-    pinned_comment = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='post_images/', blank=True, null=True)
     publication_date = models.DateTimeField(auto_now_add=True)
 

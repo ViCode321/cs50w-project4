@@ -11,6 +11,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
+
 #------------------- Registro, Acceso y Salida de Usuario -------------------
 
 #Acceso
@@ -130,11 +131,6 @@ def user_profile(request):
 def view_posts(request):
     posts = Post.objects.all()
     return render(request, 'home.html', {'posts': posts, 'naturaltime': naturaltime})
-
-@login_required(login_url='login')
-def view_posts2(request):
-    posts = Post.objects.all()
-    return render(request, 'post.html', {'posts': posts, 'naturaltime': naturaltime})
     
 #Crear post
 @login_required(login_url='login')
@@ -150,6 +146,7 @@ def create_post(request):
         form = PostForm()
     return render(request, 'create_post.html', {'form': form})
 
+#agregar comentario
 def add_comment(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     if request.method == 'POST':
@@ -168,4 +165,3 @@ def send_welcome_email(email, username):
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message, from_email, recipient_list)
-
