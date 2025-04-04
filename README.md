@@ -1,9 +1,9 @@
-# Project 4
-Desarrolle una red social enfocad hacia la comunidad cristiana llamada Chirstian toguether, un usario puede acceder a ella o registrarse, luego de registrarse es enviado
+# Project Chirstian toguether
+Red social enfocad hacia la comunidad cristiana llamada Chirstian toguether, un usario puede acceder a ella o registrarse, luego de registrarse es enviado
 al template foto.html en el cual el usuario puedo agregar su foto de perfil y hacer una biografía, luego de esto se dirige al home.html donde el usuario puede ver las publicaciones y hacer publicaciones, hay un módulo de la app que brinda al usuario 
 una forma para agregar versículos bíblicos de manera mas automatizada.
 
-Use una api de para obtener la ubicación del usuario, y otra api para cargar versículos bíblicos.
+Usa una api de para obtener la ubicación del usuario, y otra api para cargar versículos bíblicos.
 
 # Configuración del Entorno Virtual
 
